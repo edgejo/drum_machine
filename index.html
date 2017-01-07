@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body onload="pageInit()">
+    <div>
+        K
+        <button id="k1" class="button-beat">1</button>
+        <button id="k2" class="button-beat">2</button>
+        <button id="k3" class="button-beat">3</button>
+        <button id="k4" class="button-beat">4</button>
+    </div>
+    <div>
+        S
+        <button id="s1" class="button-beat">1</button>
+        <button id="s2" class="button-beat">2</button>
+        <button id="s3" class="button-beat">3</button>
+        <button id="s4" class="button-beat">4</button>
+    </div>
+    <div>
+        H
+        <button id="h1" class="button-beat">1</button>
+        <button id="h2" class="button-beat">2</button>
+        <button id="h3" class="button-beat">3</button>
+        <button id="h4" class="button-beat">4</button>
+    </div>
+    <div>
+        C
+        <button id="c1" class="button-beat">1</button>
+        <button id="c2" class="button-beat">2</button>
+        <button id="c3" class="button-beat">3</button>
+        <button id="c4" class="button-beat">4</button>
+    </div>
+</body>
+</html>
+
+<script>
+    function pageInit() {
+        var button_beats = document.getElementsByClassName("button-beat");
+
+        for (var i = 0; i < button_beats.length; i++){
+            button_beats[i].style.backgroundColor = "red";
+            button_beats[i].addEventListener("click", buttonEventListener);
+        }
+    }
+
+    function buttonEventListener() {
+        var target_element = event.target;
+
+        console.log(target_element);
+
+        target_element.style.backgroundColor = "green";
+    }
+</script>
