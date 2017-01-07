@@ -7,50 +7,85 @@
 <body onload="pageInit()">
     <div>
         K
-        <button id="k1" class="button-beat">1</button>
-        <button id="k2" class="button-beat">2</button>
-        <button id="k3" class="button-beat">3</button>
-        <button id="k4" class="button-beat">4</button>
+        <button id="k1" class="beat-button">1</button>
+        <button id="k2" class="beat-button">2</button>
+        <button id="k3" class="beat-button">3</button>
+        <button id="k4" class="beat-button">4</button>
     </div>
     <div>
         S
-        <button id="s1" class="button-beat">1</button>
-        <button id="s2" class="button-beat">2</button>
-        <button id="s3" class="button-beat">3</button>
-        <button id="s4" class="button-beat">4</button>
+        <button id="s1" class="beat-button">1</button>
+        <button id="s2" class="beat-button">2</button>
+        <button id="s3" class="beat-button">3</button>
+        <button id="s4" class="beat-button">4</button>
     </div>
     <div>
         H
-        <button id="h1" class="button-beat">1</button>
-        <button id="h2" class="button-beat">2</button>
-        <button id="h3" class="button-beat">3</button>
-        <button id="h4" class="button-beat">4</button>
+        <button id="h1" class="beat-button">1</button>
+        <button id="h2" class="beat-button">2</button>
+        <button id="h3" class="beat-button">3</button>
+        <button id="h4" class="beat-button">4</button>
     </div>
     <div>
         C
-        <button id="c1" class="button-beat">1</button>
-        <button id="c2" class="button-beat">2</button>
-        <button id="c3" class="button-beat">3</button>
-        <button id="c4" class="button-beat">4</button>
+        <button id="c1" class="beat-button">1</button>
+        <button id="c2" class="beat-button">2</button>
+        <button id="c3" class="beat-button">3</button>
+        <button id="c4" class="beat-button">4</button>
     </div>
 </body>
 </html>
 
 <script>
-    function pageInit() {
-        var button_beats = document.getElementsByClassName("button-beat");
 
-        for (var i = 0; i < button_beats.length; i++){
-            button_beats[i].style.backgroundColor = "red";
-            button_beats[i].addEventListener("click", buttonEventListener);
+    var active_beats = [];
+
+    function pageInit() {
+        var beat_buttons = document.getElementsByClassName("beat-button");
+
+        for (var i = 0; i < beat_buttons.length; i++){
+            beat_buttons[i].style.backgroundColor = "red";
+            beat_buttons[i].addEventListener("click", beatButtonEventListener);
         }
     }
 
-    function buttonEventListener() {
+    function beatButtonEventListener() {
         var target_element = event.target;
+        var beat_object = parseBeatObject(target_element);
 
-        console.log(target_element);
-
-        target_element.style.backgroundColor = "green";
+        if (toggleBeat(beat_object)) {
+            target_element.style.backgroundColor = "green";
+        } else {
+            target_element.style.backgroundColor = "red";
+        }
     }
+
+    function toggleBeat(beat) {
+        // TODO check if beat is already active
+        active_beats.push(beat);
+        console.log(active_beats);
+
+        return true;
+    }
+
+    function Beat(type, time){
+        this.type = type;
+        this.time = time;
+    }
+
+    function parseBeatObject(html_beat_button) {
+        var button_id;
+        var drum_type;
+        var drum_time;
+        var beat_object;
+
+        button_id = html_beat_button.id;
+        drum_type = button_id.substr(0, 1);
+        drum_time = button_id.substr(1, 1);
+
+        beat_object = new Beat(drum_type, drum_time);
+
+        return beat_object;
+    }
+
 </script>
