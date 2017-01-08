@@ -61,16 +61,32 @@
     }
 
     function toggleBeat(beat) {
-        // TODO check if beat is already active
-        active_beats.push(beat);
-        console.log(active_beats);
+        var index = beat.getActiveIndex();
 
-        return true;
+        if (index >= 0) {
+            active_beats.splice(index, 1);
+            console.log("de-activated beat: " + beat.id);
+            return false;
+        } else {
+            active_beats.push(beat);
+            console.log("activated beat: " + beat.id);
+            return true;
+        }
     }
 
-    function Beat(type, time){
+    function Beat(id, type, time) {
+        this.id = id;
         this.type = type;
         this.time = time;
+        this.getActiveIndex = function() {
+            // TODO improve iteration logic 
+            for (var i = 0; i < active_beats.length; i++){
+                if (active_beats[i].id == this.id){
+                    return i;
+                }
+            }
+            return -1;
+        };
     }
 
     function parseBeatObject(html_beat_button) {
@@ -81,9 +97,9 @@
 
         button_id = html_beat_button.id;
         drum_type = button_id.substr(0, 1);
-        drum_time = button_id.substr(1, 1);
+        drum_time = parseInt(button_id.substr(1));
 
-        beat_object = new Beat(drum_type, drum_time);
+        beat_object = new Beat(button_id, drum_type, drum_time);
 
         return beat_object;
     }
