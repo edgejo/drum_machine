@@ -12,6 +12,7 @@
     <div>
         <button id="play"></button>
     </div>
+    <div id="current-beat"></div>
 </body>
 </html>
 
@@ -19,6 +20,8 @@
     var num_beats = 4;
     var active_beats = [];
     var playing = false;
+    var current_beat = -1;
+    var beat_callback = -1;
 
     function pageInit() {
         var beat_button_template = '<button id="temp-id" class="beat-button"></button>';
@@ -103,14 +106,55 @@
 
     function playButtonEventListener() {
         var play_button = event.target;
+        var bpm = 120;
 
         if (playing == false) {
-            playing = true;
+            startMusic(bpm);
             play_button.innerHTML = "Stop";
         } else {
-            playing = false;
+            stopMusic();
             play_button.innerHTML = "Play";
         }
     }
 
+    function startMusic(bpm) {
+        var beat_frequency;
+
+        playing = true;
+        current_beat = 1;
+
+        // number of ms between beats
+        beat_frequency = (60 / bpm) * 1000;
+
+        beat_callback = window.setInterval(processNextBeat, beat_frequency);
+        processNextBeat();
+    }
+
+    function stopMusic() {
+        var current_beat_div;
+
+        window.clearInterval(beat_callback);
+        playing = false;
+
+        current_beat_div = document.getElementById("current-beat");
+        current_beat_div.innerHTML = "";
+    }
+
+    function processNextBeat() {
+        var current_beat_div = document.getElementById("current-beat");
+        current_beat_div.innerHTML = current_beat + " ";
+
+        // get all beats at the current_time
+        for (var i = 0; i < active_beats.length; i++){
+            if (active_beats[i].time == current_beat) {
+                current_beat_div.innerHTML += active_beats[i].type + " ";
+            }
+        }   
+
+        if (current_beat < num_beats){
+            current_beat += 1;
+        } else {
+            current_beat = 1;
+        }
+    }
 </script>
